@@ -4,169 +4,97 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>نظام الكاشير الذكي</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <title>سوبر ماركت برو | الكاشير والمخزن</title>
     <style>
         :root {
-            --bg: #f4f7f6;
-            --primary: #3498db;
-            --dark: #2c3e50;
-            --success: #27ae60;
-        }
-
-        a {
-            text-decoration: none;
-            color: var(--bg);
+            --main: #2c3e50;
+            --green: #27ae60;
+            --red: #e74c3c;
         }
 
         body {
-            font-family: 'Segoe UI', sans-serif;
-            background: var(--bg);
+            font-family: sans-serif;
+            background: #f4f4f4;
             margin: 0;
-            display: flex;
-            height: 100vh;
-            overflow: hidden;
+            padding: 20px;
         }
 
-        /* القائمة الجانبية */
-        nav {
-            width: 80px;
-            background: var(--dark);
-            color: white;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 20px 0;
-        }
-
-        nav i {
-            font-size: 1.5rem;
-            margin-bottom: 30px;
-            cursor: pointer;
-            opacity: 0.7;
-            transition: 0.3s;
-        }
-
-        nav i.active {
-            opacity: 1;
-            color: var(--primary);
-        }
-
-        /* منطقة العمل */
-        main {
-            flex: 1;
+        .grid {
             display: grid;
             grid-template-columns: 1fr 350px;
             gap: 20px;
-            padding: 20px;
-            overflow: hidden;
         }
 
-        /* قسم المنتجات */
-        .products-area {
-            overflow-y: auto;
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-            gap: 15px;
-            align-content: start;
-        }
-
-        .product-card {
+        .card {
             background: white;
-            border-radius: 12px;
-            padding: 15px;
-            text-align: center;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            border-bottom: 2px solid var(--green);
+            padding-bottom: 5px;
+            color: var(--main);
+        }
+
+        input,
+        select {
+            padding: 10px;
+            margin: 5px 0;
+            width: 95%;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            color: white;
             cursor: pointer;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-            transition: 0.2s;
-            border: 2px solid transparent;
+            border-radius: 5px;
         }
 
-        .product-card:hover {
-            border-color: var(--primary);
-            transform: translateY(-3px);
+        .btn-add {
+            background: var(--main);
         }
 
-        .product-card h3 {
-            margin: 10px 0 5px;
-            font-size: 1rem;
-            color: var(--dark);
-        }
-
-        .product-card span {
-            color: var(--success);
-            font-weight: bold;
-        }
-
-        /* فاتورة الكاشير */
-        .cart-panel {
-            background: white;
-            border-radius: 15px;
-            display: flex;
-            flex-direction: column;
-            box-shadow: -5px 0 15px rgba(0, 0, 0, 0.05);
-        }
-
-        .cart-header {
-            padding: 20px;
-            border-bottom: 1px solid #eee;
-            font-weight: bold;
+        .btn-pay {
+            background: var(--green);
+            width: 100%;
             font-size: 1.2rem;
         }
 
-        .cart-items {
-            flex: 1;
-            overflow-y: auto;
+        .product-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .item-card {
+            background: #fff;
+            border: 1px solid #eee;
             padding: 10px;
+            text-align: center;
+            cursor: pointer;
+            border-radius: 8px;
+        }
+
+        .item-card:hover {
+            border-color: var(--green);
         }
 
         .cart-item {
             display: flex;
             justify-content: space-between;
-            align-items: center;
-            padding: 10px;
-            border-bottom: 1px solid #f9f9f9;
-            font-size: 0.9rem;
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
         }
 
-        .cart-footer {
-            padding: 20px;
-            background: #f9f9f9;
-            border-radius: 0 0 15px 15px;
-        }
-
-        .total-row {
-            display: flex;
-            justify-content: space-between;
-            font-size: 1.4rem;
-            font-weight: bold;
-            margin-bottom: 15px;
-        }
-
-        .btn-pay {
-            width: 100%;
-            padding: 15px;
-            background: var(--success);
-            color: white;
-            border: none;
-            border-radius: 10px;
-            font-size: 1.1rem;
-            cursor: pointer;
-            box-shadow: 0 4px 10px rgba(39, 174, 96, 0.3);
-        }
-
-        @media (max-width: 900px) {
-            main {
+        @media (max-width: 800px) {
+            .grid {
                 grid-template-columns: 1fr;
-            }
-
-            .cart-panel {
-                position: fixed;
-                bottom: 0;
-                left: 0;
-                right: 0;
-                height: 50%;
-                z-index: 100;
             }
         }
     </style>
@@ -174,96 +102,107 @@
 
 <body>
 
-    <nav>
-        <a href="products.html"><i class="fas fa-th active"></i></a>
-        <a href="products.html"><i class="fas fa-boxes"></i></a>
-        <i class="fas fa-chart-line"></i>
-        <i class="fas fa-cog"></i>
-    </nav>
-
-    <main>
-        <div class="products-area" id="productsGrid">
-            <div class="product-card" onclick="addToCart('حليب مزارع', 45)">
-                <i class="fas fa-bottle-water fa-2x" style="color: #3498db;"></i>
-                <h3>حليب مزارع</h3>
-                <span>45 ج.م</span>
-            </div>
-        </div>
-
-        <div class="cart-panel">
-            <div class="cart-header"><i class="fas fa-shopping-cart"></i> السلة الحالية</div>
-            <div class="cart-items" id="cartItems">
-            </div>
-            <div class="cart-footer">
-                <div class="total-row">
-                    <span>الإجمالي</span>
-                    <span><span id="totalPrice">0</span> ج.م</span>
+    <div class="grid">
+        <div>
+            <div class="card">
+                <h2>إضافة منتج جديد للمخزن</h2>
+                <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                    <input type="text" id="pName" placeholder="اسم المنتج" style="width: 200px;">
+                    <input type="number" id="pPrice" placeholder="سعر الجمله" style="width: 80px;">
+                    <input type="number" id="sellPrice" placeholder="سعر البيع" style="width: 80px;">
+                    <input type="number" id="pStock" placeholder="الكمية" style="width: 80px;">
+                    <button class="btn btn-add" onclick="saveToSheet()">حفظ في جوجل شيت</button>
                 </div>
-                <button class="btn-pay" onclick="checkout()"><i class="fas fa-check-circle"></i> تأكيد ودفع</button>
+            </div>
+
+            <div class="card" style="margin-top: 20px;">
+                <h2>المنتجات في المخزن (اضغط للبيع)</h2>
+                <div id="stockContainer" class="product-list">جاري تحميل المخزن...</div>
             </div>
         </div>
-    </main>
+
+        <div class="card">
+            <h2>الفاتورة</h2>
+            <div id="cartItems" style="min-height: 200px;">
+            </div>
+            <hr>
+            <div style="font-size: 1.5rem; font-weight: bold; margin: 15px 0;">
+                الإجمالي: <span id="totalPrice">0</span> ج.م
+            </div>
+            <button class="btn btn-pay" onclick="processSale()">إتمام البيع (خصم من الشيت)</button>
+        </div>
+    </div>
 
     <script>
-        const API_URL = 'https://script.google.com/macros/s/AKfycbwzY1WHslC1_otgUl0EgMCRqdngh7YCBPbLXSGOzeJBpvNhzjsp5FpZQqRdnSFWIIAe8A/exec';
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwTUhfntN4BVoo5x4ps47NfrMFC1fJJO5Gtms7-knjFS21OSKDo8FMe1i9ZbkMDDEQqrA/exec";
         let cart = [];
 
-        function addToCart(name, price) {
-            const item = cart.find(i => i.name === name);
-            if (item) item.quantity++;
-            else cart.push({ name, price, quantity: 1 });
-            renderCart();
+        // 1. جلب المنتجات من الشيت
+        async function loadStock() {
+            const res = await fetch(SCRIPT_URL);
+            const data = await res.json();
+            const container = document.getElementById('stockContainer');
+            container.innerHTML = '';
+            data.forEach(row => {
+                container.innerHTML += `
+                <div class="item-card" onclick="addToCart('${row[1]}', ${row[2]})">
+                    <b>${row[1]}</b><br>
+                    <span style="color:var(--green)">${row[2]} ج.م</span><br>
+                    <small>متاح: ${row[3]}</small>
+                </div>`;
+            });
         }
 
-        function renderCart() {
+        // 2. إضافة منتج جديد للشيت
+        async function saveToSheet() {
+            const name = document.getElementById('pName').value;
+            const price = document.getElementById('pPrice').value;
+            const stock = document.getElementById('pStock').value;
+            const sellPrice = document.getElementById('sellPrice').value;
+            const profit = sellPrice - (price / stock)
+
+            await fetch(SCRIPT_URL, {
+                method: 'POST',
+                body: JSON.stringify({ action: "add", name, price, sellPrice, stock, profit })
+            });
+            alert("تمت الإضافة للمخزن");
+            loadStock();
+        }
+
+        // 3. إدارة السلة
+        function addToCart(name, price) {
+            const found = cart.find(i => i.name === name);
+            if (found) found.quantity++;
+            else cart.push({ name, price, quantity: 1 });
+            updateCartUI();
+        }
+
+        function updateCartUI() {
             const container = document.getElementById('cartItems');
-            container.innerHTML = cart.map((item, index) => `
+            container.innerHTML = cart.map(i => `
             <div class="cart-item">
-                <div>
-                    <b>${item.name}</b><br>
-                    <small>${item.price} × ${item.quantity}</small>
-                </div>
-                <div>${item.price * item.quantity} ج.م</div>
-                <i class="fas fa-times" style="color:red; cursor:pointer" onclick="removeItem(${index})"></i>
+                <span>${i.name} (x${i.quantity})</span>
+                <span>${i.price * i.quantity} ج.م</span>
             </div>
         `).join('');
-
-            const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            const total = cart.reduce((s, i) => s + (i.price * i.quantity), 0);
             document.getElementById('totalPrice').innerText = total;
         }
 
-        function removeItem(index) {
-            cart.splice(index, 1);
-            renderCart();
+        // 4. إتمام البيع والخصم
+        async function processSale() {
+            if (cart.length === 0) return;
+            await fetch(SCRIPT_URL, {
+                method: 'POST',
+                body: JSON.stringify({ action: "sell", items: cart })
+            });
+            alert("تم البيع وخصم الكميات من المخزن!");
+            cart = [];
+            updateCartUI();
+            loadStock(); // تحديث الأرقام المعروضة
         }
 
-        async function checkout() {
-            if (cart.length === 0) return alert("السلة فارغة!");
-
-            const total = document.getElementById("totalPrice").innerText;
-
-            const data = {
-                action: "checkout",
-                cart: cart, // يحتوي على [ {name: "أرز", quantity: 2}, ... ]
-                total: total
-            };
-
-            try {
-                const response = await fetch(API_URL, {
-                    method: 'POST',
-                    body: JSON.stringify(data)
-                });
-
-                if (response.ok) {
-                    alert("تم إتمام البيع وتحديث المخزون في جوجل شيت!");
-                    cart = []; // تفريغ السلة
-                    renderCart();
-                    loadProducts(); // إعادة جلب المنتجات لتحديث الكميات المعروضة في الموقع
-                }
-            } catch (error) {
-                alert("حدث خطأ في الاتصال");
-            }
-        }
+        window.onload = loadStock;
     </script>
 </body>
 
